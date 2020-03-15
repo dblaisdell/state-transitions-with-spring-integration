@@ -3,9 +3,10 @@ package rnd.statemachine.order;
 import rnd.statemachine.ProcessState;
 
 /**  
- * DEFAULT        -  SUBMIT -> orderProcessor()   -> ORDERCREATED   -> PAYMENTPENDING
- * PAYMENTPENDING -  PAY    -> paymentProcessor() -> PAYMENTERROR   -> PMTERREMAILSENT
- * PMTERREMAILSENT -  PAY    -> paymentProcessor() -> PAYMENTSUCCESS -> PAYMENTSUCCESS
+ * DEFAULT               - CREATE   -> orderProcessor()   -> ORDERCREATED   -> PAYMENTPENDING
+ * PAYMENTPENDING        - PAY      -> paymentProcessor() -> PAYMENTERROR   -> PAYMENTERROREMAILSENT
+ * PAYMENTERROREMAILSENT - RETRYPAY -> paymentProcessor() -> PAYMENTSUCCESS -> PAYMENTSUCCESS
+ * PAYMENTPENDING        - PAY      -> paymentProcessor() -> PAYMENTSUCCESS -> PAYMENTSUCCESS
  */
 public enum OrderState implements ProcessState {
     DEFAULT,

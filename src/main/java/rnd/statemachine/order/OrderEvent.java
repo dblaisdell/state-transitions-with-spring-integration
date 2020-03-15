@@ -4,17 +4,17 @@ import rnd.statemachine.ProcessEvent;
 import rnd.statemachine.ProcessState;
 
 /**  
- * DEFAULT        -  SUBMIT -> orderProcessor()   -> ORDERCREATED   -> PAYMENTPENDING
- * PAYMENTPENDING -  PAY    -> paymentProcessor() -> PAYMENTERROR   -> PAYMENTERROREMAILSENT
- * PAYMENTERROREMAILSENT -  REPAY    -> paymentProcessor() -> PAYMENTSUCCESS -> PAYMENTSUCCESS
- * 
+ * DEFAULT               - CREATE   -> orderProcessor()   -> ORDERCREATED   -> PAYMENTPENDING
+ * PAYMENTPENDING        - PAY      -> paymentProcessor() -> PAYMENTERROR   -> PAYMENTERROREMAILSENT
+ * PAYMENTERROREMAILSENT - RETRYPAY -> paymentProcessor() -> PAYMENTSUCCESS -> PAYMENTSUCCESS
+ * PAYMENTPENDING        - PAY      -> paymentProcessor() -> PAYMENTSUCCESS -> PAYMENTSUCCESS
  */
 public enum OrderEvent implements ProcessEvent {
 
     CREATE {
         @Override
         public String getChannelName() {
-            return "submitChannel";
+            return "createChannel";
         }
 
         /**
