@@ -21,7 +21,7 @@ Build using:\
 $ ./gradlew build
 
 Run using:\
-$ \gradlew bootRun
+$ ./gradlew bootRun
 
 # Testing
 
@@ -39,7 +39,7 @@ POST http://localhost:8080/orders/{orderId}/payment/{amount}
 
 POST http://localhost:8080/orders/{orderId}/retrypayment/{amount}
 
-
+The project includes a JMeter [test scripts file](https://github.com/mapteb/state-transitions-with-spring-integration/tree/master/src/test/jmeter) where the above APIs can be tested.
 
 ### Realed Project
 
