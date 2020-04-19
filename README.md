@@ -43,7 +43,7 @@ The project includes a JMeter [test scripts file](https://github.com/mapteb/stat
 
 ### Realed Project
 
-The technique used in this Java project can be easily adapted to front-end JavaScript UI applications. Here is an [example](https://github.com/mapteb/state-transitions-with-webcomponents) for the TodoMVC UI application.
+The state transitions technique used in this Java project can be easily adapted to front-end JavaScript UI applications. Here is an [example](https://github.com/mapteb/state-transitions-with-webcomponents).
 
 ### More Info
 
