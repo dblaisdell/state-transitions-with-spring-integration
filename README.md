@@ -41,7 +41,7 @@ POST http://localhost:8080/orders/{orderId}/retrypayment/{amount}
 
 The project includes a JMeter [test scripts file](https://github.com/mapteb/state-transitions-with-spring-integration/tree/master/src/test/jmeter) where the above APIs can be tested.
 
-### Realed Project
+### Related Project
 
 The state transitions technique used in this Java project can be easily adapted to front-end JavaScript UI applications. Here is an [example](https://github.com/mapteb/state-transitions-with-webcomponents).
 
