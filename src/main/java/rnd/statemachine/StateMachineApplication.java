@@ -1,9 +1,11 @@
 package rnd.statemachine;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.integration.config.EnableIntegration;
+import org.springframework.statemachine.config.EnableWithStateMachine;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
@@ -18,8 +20,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableIntegration
 @SpringBootApplication
 @EnableTransactionManagement
-@ImportResource({"classpath*:/META-inf/spring/integration/MessageChannelConfig.xml"})
+@ComponentScan(basePackages = {"rnd.statemachine.order"})
+@EnableWithStateMachine
 public class StateMachineApplication {
+
+	@Autowired
+	private ProcessStateMachine stateMachine;
+
 	public static void main(String[] args) {
 		SpringApplication.run(StateMachineApplication.class, args);
 	}

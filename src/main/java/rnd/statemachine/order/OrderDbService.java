@@ -1,7 +1,9 @@
 package rnd.statemachine.order;
 
+import java.util.List;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Service;
@@ -16,18 +18,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class OrderDbService {
 
+	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	public OrderDbService() {
-		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName("org.h2.Driver");
-		dataSource.setUrl("jdbc:h2:mem:testdb");
-		dataSource.setUsername("SA");
-		dataSource.setPassword("");
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
+	public List<OrderData> getOrders() {
+		return jdbcTemplate.query("select uuid,state from ORDER_STATE",(rs, rowNum) -> {
+			OrderData d = new OrderData();
+			d.setOrderId(UUID.fromString(rs.getString("uuid")));
+			d.setMessage(rs.getString("state"));
+			return d;
+		});
 	}
-
-
 
     public String getOrderState(UUID uuid) {
     	String sql = "select state from ORDER_STATE where uuid='"+uuid+"'";

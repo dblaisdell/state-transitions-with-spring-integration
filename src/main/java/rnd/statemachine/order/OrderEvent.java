@@ -100,7 +100,7 @@ public enum OrderEvent implements ProcessEvent {
 
         @Override
         public ProcessState nextState() {
-            return OrderState.PAYMENTERROREMAILSENT;
+            return OrderState.PAYMENTERROR;
         }
 
         @Override
@@ -124,7 +124,7 @@ public enum OrderEvent implements ProcessEvent {
 
         @Override
         public ProcessState nextState() {
-            return OrderState.PAYMENTSUCCESSEMAILSENT;
+            return OrderState.PAYMENTSUCCESS;
         }
 
         @Override
@@ -148,7 +148,7 @@ public enum OrderEvent implements ProcessEvent {
 
         @Override
         public ProcessState nextState() {
-            return OrderState.PAYMENTERROREMAILSENT;
+            return OrderState.PAYMENTERROR;
         }
 
         @Override

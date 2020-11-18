@@ -11,8 +11,6 @@ import rnd.statemachine.ProcessState;
 public enum OrderState implements ProcessState {
     DEFAULT,
     PAYMENTPENDING,
-    PAYINPROGRESS,
-    PAYMENTERROREMAILSENT,
-    RETRYPAYINPROGRESS,
-    PAYMENTSUCCESSEMAILSENT
+    PAYMENTERROR,
+    PAYMENTSUCCESS
 }

@@ -1,5 +1,7 @@
 package rnd.statemachine.order;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.messaging.Message;
@@ -20,11 +22,13 @@ import rnd.statemachine.ProcessException;
 @Service
 public class OrderStateTransitionsMgrNonBlocking extends AbstractStateTransitionsManager {
 
+	@Autowired
 	private final OrderDbService dbService;
-	private final AbstractApplicationContext applicationContext;
-	
-	private OrderStateTransitionsMgrNonBlocking(AbstractApplicationContext applicationContext, OrderDbService dbService) {
-		this.applicationContext = new ClassPathXmlApplicationContext("/META-INF/spring/integration/MessageChannelConfig.xml", OrderStateTransitionsMgrNonBlocking.class);
+
+	@Autowired
+	private ApplicationContext applicationContext;
+
+	public OrderStateTransitionsMgrNonBlocking(OrderDbService dbService) {
 		this.dbService = dbService;
 	}
 

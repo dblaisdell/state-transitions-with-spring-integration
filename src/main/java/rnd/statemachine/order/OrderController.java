@@ -1,11 +1,10 @@
 package rnd.statemachine.order;
 
+import java.util.List;
 import java.util.UUID;
 
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
 import rnd.statemachine.ProcessException;
@@ -13,9 +12,15 @@ import rnd.statemachine.ProcessException;
 @RequiredArgsConstructor
 @RestController
 public class OrderController {
+
+    @Autowired
     private final OrderStateTransitionsMgrBlocking stateTrasitionsMgrBlocking;
+
+    @Autowired
     private final OrderStateTransitionsMgrNonBlocking stateTrasitionsMgrNonBlocking;
 
+    @Autowired
+    private OrderDbService orderDbService;
     /**
      * Quick API to test the payment event
      * @param amount
@@ -73,6 +78,12 @@ public class OrderController {
         data.setEvent(OrderEvent.CREATE);
         data = (OrderData)stateTrasitionsMgrBlocking.processPreEvent(data);
         return ((OrderData)data).getMessage();
+    }
+
+    @ResponseBody
+    @GetMapping("/orders")
+    public List<OrderData> getOrders() {
+        return orderDbService.getOrders();
     }
 }
 

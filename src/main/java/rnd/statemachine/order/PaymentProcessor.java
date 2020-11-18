@@ -1,8 +1,10 @@
 package rnd.statemachine.order;
 
+import org.springframework.stereotype.Component;
 import rnd.statemachine.ProcessData;
 import rnd.statemachine.Processor;
 
+@Component
 public class PaymentProcessor implements Processor {
     
     @Override

@@ -2,8 +2,10 @@ package rnd.statemachine.order;
 
 import java.util.UUID;
 
-import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.PollableChannel;
@@ -23,11 +25,13 @@ import rnd.statemachine.ProcessException;
 @Service
 public class OrderStateTransitionsMgrBlocking extends AbstractStateTransitionsManager {
 
+	@Autowired
 	private final OrderDbService dbService;
-	private final AbstractApplicationContext applicationContext;
-	
-	private OrderStateTransitionsMgrBlocking(AbstractApplicationContext applicationContext, OrderDbService dbService) {
-		this.applicationContext = new ClassPathXmlApplicationContext("/META-INF/spring/integration/MessageChannelConfig.xml", OrderStateTransitionsMgrBlocking.class);
+
+	@Autowired
+	private ApplicationContext applicationContext;
+
+	public OrderStateTransitionsMgrBlocking(OrderDbService dbService) {
 		this.dbService = dbService;
 	}
 
@@ -70,4 +74,5 @@ public class OrderStateTransitionsMgrBlocking extends AbstractStateTransitionsMa
 			return currentState.name().equals(this.dbService.getOrderState(data.getOrderId())); 
 		}
 	}
+
 }
