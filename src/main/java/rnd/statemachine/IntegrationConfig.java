@@ -1,6 +1,5 @@
 package rnd.statemachine;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.dsl.IntegrationFlow;
@@ -9,8 +8,6 @@ import org.springframework.integration.dsl.MessageChannels;
 import org.springframework.integration.scheduling.PollerMetadata;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.scheduling.support.PeriodicTrigger;
-import rnd.statemachine.ProcessData;
-import rnd.statemachine.order.*;
 
 @Configuration
 public class IntegrationConfig {
@@ -43,30 +40,23 @@ public class IntegrationConfig {
     }
 
     @Bean
-    public IntegrationFlow orderProcessorFlow(@Autowired OrderProcessor orderProcessor) {
+    public IntegrationFlow orderProcessorFlow() {
         return IntegrationFlows.from(createChannel())
-                .<ProcessData>handle((payload, headers) -> {
-                    return orderProcessor.process(payload);
-                }).get();
+                .log()
+                .get();
     }
 
     @Bean
-    public IntegrationFlow paymentProcessorFlow(@Autowired PaymentProcessor paymentProcessor) {
+    public IntegrationFlow paymentProcessorFlow() {
         return IntegrationFlows.from(payChannel())
-                .<ProcessData>handle((payload, headers) -> {
-                    return paymentProcessor.process(payload);
-                }).get();
+                .log()
+               .get();
     }
 
     @Bean
-    public IntegrationFlow nameThisFlow(@Autowired OrderDbService orderDbService) {
+    public IntegrationFlow nameThisFlow() {
         return IntegrationFlows.from(postEventHandlerChannel())
-                .<ProcessData>handle((payload, headers) -> {
-                    System.out.println("Post-event: " + payload.getEvent().toString());
-                    orderDbService.saveState(((OrderData) payload).getOrderId(),
-                            ((OrderState) payload.getEvent().nextState()).name());
-                    System.out.println("Final state: " + orderDbService.getOrderState(((OrderData) payload).getOrderId()));
-                    return payload;
-                }).get();
+                .log()
+                .get();
     }
 }

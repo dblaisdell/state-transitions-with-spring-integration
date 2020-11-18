@@ -2,21 +2,21 @@ package rnd.statemachine.order;
 
 import java.util.UUID;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import rnd.statemachine.ProcessData;
-import rnd.statemachine.ProcessEvent;
+import lombok.*;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter @Getter
 @Builder
-public class OrderData implements ProcessData {
+@ToString
+@Entity
+public class OrderData {
 	private double payment;
-	private ProcessEvent event;
-	private UUID orderId;
+	private @Id UUID orderId;
 	private String message;
 }
