@@ -1,14 +1,14 @@
 package rnd.statemachine.order;
 
-import java.util.List;
-import java.util.UUID;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import lombok.RequiredArgsConstructor;
+import rnd.statemachine.OrderGateway;
 import rnd.statemachine.ProcessException;
 import rnd.statemachine.repos.OrderDataRepository;
+
+import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
@@ -62,7 +62,9 @@ public class OrderController {
     public String handleIllegalStateException(IllegalStateException e) {
         return e.getMessage();
     }
-    
+
+    @Autowired
+    OrderGateway orderGateway;
     /**
      * API to test the order create event
      * @return
@@ -75,7 +77,9 @@ public class OrderController {
 //        data.setEvent(OrderEvent.CREATE);
 //        data = (OrderData)stateTrasitionsMgrBlocking.processPreEvent(data);
 //        return ((OrderData)data).getMessage();
-        return "handleOrderCreate";
+
+        UUID id = orderGateway.createOrder(new OrderData());
+        return id.toString();
     }
 
     @ResponseBody

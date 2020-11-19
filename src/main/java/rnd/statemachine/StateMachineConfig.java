@@ -21,6 +21,8 @@ import org.springframework.statemachine.listener.StateMachineListener;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
 import org.springframework.statemachine.persist.StateMachineRuntimePersister;
 import org.springframework.statemachine.state.State;
+import rnd.statemachine.actions.CreateOrderAction;
+import rnd.statemachine.actions.PaymentAction;
 import rnd.statemachine.order.OrderData;
 import rnd.statemachine.order.OrderEvent;
 import rnd.statemachine.order.OrderState;
@@ -48,14 +50,19 @@ public class StateMachineConfig {
     @EnableStateMachineFactory
     public static class FactoryConfig extends StateMachineConfigurerAdapter<String, String> {
 
-        private final Logger LOG =
-                LoggerFactory.getLogger(StateMachineConfig.class);
+        private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
         @Autowired
         OrderDataRepository orderDataRepository;
 
         @Autowired
         private StateMachineRuntimePersister<String, String, String> stateMachineRuntimePersister;
+
+        @Autowired
+        CreateOrderAction createOrderAction;
+
+        @Autowired
+        PaymentAction paymentAction;
 
         @Override
         public void configure(StateMachineConfigurationConfigurer<String, String> config) throws Exception {
@@ -73,9 +80,9 @@ public class StateMachineConfig {
             super.configure(transitions);
             transitions
                     .withExternal()
-                    .source(OrderState.DEFAULT.name()).target(OrderState.PAYMENTPENDING.name()).event(OrderEvent.ORDERCREATED.name()).action(createOrderAction()).and()
+                    .source(OrderState.DEFAULT.name()).target(OrderState.PAYMENTPENDING.name()).event(OrderEvent.ORDERCREATED.name()).action(createOrderAction).and()
                     .withExternal()
-                    .source(OrderState.PAYMENTPENDING.name()).target(OrderState.PAYMENTPENDING.name()).event(OrderEvent.PAY.name()).action(payAction()).and()
+                    .source(OrderState.PAYMENTPENDING.name()).target(OrderState.PAYMENTPENDING.name()).event(OrderEvent.PAY.name()).action(paymentAction).and()
                     .withExternal()
                     .source(OrderState.PAYMENTPENDING.name()).target(OrderState.PAYMENTSUCCESS.name()).event(OrderEvent.PAYMENTSUCCESS.name()).and()
                     .withExternal()
@@ -110,28 +117,6 @@ public class StateMachineConfig {
                         LOG.info("State changed from " + from.getId() + " to " + to.getId());
                     }
                 }
-            };
-        }
-
-        public Action<String, String> createOrderAction() {
-            return stateContext -> {
-                UUID id = UUID.randomUUID();
-                OrderData data = new OrderData();
-                data.setOrderId(id);
-                data.setMessage("Order Created");
-                data = orderDataRepository.save(data);
-                stateContext.getExtendedState().getVariables().put("id", id);
-                LOG.info("Created: " + data);
-            };
-        }
-
-        public Action<String, String> payAction() {
-            return stateContext -> {
-                UUID id = (UUID) stateContext.getExtendedState().getVariables().get("id");
-                OrderData data = orderDataRepository.findById(id).get();
-                data.setMessage("PAYMENT IN PROGRESS");
-                data = orderDataRepository.save(data);
-                LOG.info("Pay Action: " + data);
             };
         }
 
